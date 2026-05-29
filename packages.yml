@@ -1,0 +1,23 @@
+mesa:
+  description: Mesa Turnip Vulkan driver for Adreno/KGSL
+  repo: https://github.com/whitebelyash/mesa-unified.git
+  branch: turnip/gen8
+  output: mesa-{version}.zip
+
+fexcore:
+  description: FEXCore CPU emulation layer
+  repo: https://github.com/FEX-Emu/FEX.git
+  branch: main
+  output: fexcore-{version}.zip
+
+wine:
+  description: Wine 11 ARM64 + ARM64EC (bylaws patched)
+  repo: https://github.com/bylaws/wine.git
+  branch: upstream-arm64ec
+  output: wine-arm64-{version}.wcp
+
+box64:
+  description: Box64 x86_64 emulator for ARM64
+  repo: https://github.com/ptitSeb/box64.git
+  branch: main
+  output: box64-{version}.zip
