@@ -1,0 +1,54 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/main/.schema/devbox.schema.json",
+  "packages": [
+    "androidenv.androidPkgs.ndk-bundle@latest",
+    "androidenv.androidPkgs.platform-tools@latest",
+    "python3",
+    "python3Packages.pyyaml",
+    "python3Packages.mako",
+    "git",
+    "zip",
+    "yq-go",
+    "meson",
+    "ninja",
+    "cmake",
+    "patchelf",
+    "glslang",
+    "pkg-config",
+    "bison",
+    "flex",
+    "libxml2",
+    "libarchive",
+    "curl",
+    "xz",
+    "clang",
+    "lld",
+    "autoconf",
+    "automake",
+    "libtool",
+    "gnumake",
+    "perl",
+    "libx11",
+    "libxext",
+    "freetype"
+  ],
+  "env": {
+    "DEVBOX_ANDROID_HOME": ".devbox/nix/profile/default/libexec/android-sdk",
+    "DEVBOX_NDK": ".devbox/nix/profile/default/libexec/android-sdk/ndk/29.0.14206865",
+    "ANDROID_HOME": "$PWD/.devbox/nix/profile/default/libexec/android-sdk",
+    "NDK": "$PWD/.devbox/nix/profile/default/libexec/android-sdk/ndk/29.0.14206865"
+  },
+  "shell": {
+    "init_hook": [
+      "export DEVBOX_DIR=\"$(pwd)\"",
+      "export ANDROID_HOME=\"$DEVBOX_DIR/.devbox/nix/profile/default/libexec/android-sdk\"",
+      "export NDK=\"$DEVBOX_DIR/.devbox/nix/profile/default/libexec/android-sdk/ndk/29.0.14206865\"",
+      "echo \"Winlator CMOD build environment ready\"",
+      "echo \"  NDK: $NDK\"",
+      "echo \"  SDK: $ANDROID_HOME\""
+    ],
+    "scripts": {
+      "test": ["echo \"Error: no test specified\" && exit 1"]
+    }
+  }
+}

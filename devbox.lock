@@ -1,0 +1,218 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "androidenv.androidPkgs.ndk-bundle@latest": {
+      "last_modified": "2026-05-08T21:03:27Z",
+      "resolved": "github:NixOS/nixpkgs/b3da656039dc7a6240f27b2ef8cc6a3ef3bccae7#androidenv.androidPkgs.ndk-bundle",
+      "source": "devbox-search",
+      "version": "29.0.14206865",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/i5dh8wb5qvxrqgrhwyxhrzl3fficvdi1-android-sdk-ndk-29.0.14206865",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/i5dh8wb5qvxrqgrhwyxhrzl3fficvdi1-android-sdk-ndk-29.0.14206865"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/y478w1l534xk03fx23fxmx4il63mmy4k-android-sdk-ndk-29.0.14206865",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/y478w1l534xk03fx23fxmx4il63mmy4k-android-sdk-ndk-29.0.14206865"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/8rv3viikiy9jvfqr7m0p3lhacxwyylly-android-sdk-ndk-29.0.14206865",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/8rv3viikiy9jvfqr7m0p3lhacxwyylly-android-sdk-ndk-29.0.14206865"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/8lrbv5hnwhi7wdlf9v044w30ig9jh5ka-android-sdk-ndk-29.0.14206865",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/8lrbv5hnwhi7wdlf9v044w30ig9jh5ka-android-sdk-ndk-29.0.14206865"
+        }
+      }
+    },
+    "androidenv.androidPkgs.platform-tools@latest": {
+      "last_modified": "2026-04-23T13:07:47Z",
+      "resolved": "github:NixOS/nixpkgs/01fbdeef22b76df85ea168fbfe1bfd9e63681b30#androidenv.androidPkgs.platform-tools",
+      "source": "devbox-search",
+      "version": "37.0.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/wvmd83lgvbrp85w6yhgnal5fgr1j7pal-android-sdk-platform-tools-37.0.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/wvmd83lgvbrp85w6yhgnal5fgr1j7pal-android-sdk-platform-tools-37.0.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/ldpzw99nqq42dxm46mm0n6zc0cypn42m-android-sdk-platform-tools-37.0.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/ldpzw99nqq42dxm46mm0n6zc0cypn42m-android-sdk-platform-tools-37.0.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/gljb2930rh5w8yjmrly8x1ic5frccpyd-android-sdk-platform-tools-37.0.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/gljb2930rh5w8yjmrly8x1ic5frccpyd-android-sdk-platform-tools-37.0.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/v78wyjxxln3bsi00lfv541wvfmq6mij1-android-sdk-platform-tools-37.0.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/v78wyjxxln3bsi00lfv541wvfmq6mij1-android-sdk-platform-tools-37.0.0"
+        }
+      }
+    },
+    "autoconf": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#autoconf",
+      "source": "nixpkg"
+    },
+    "automake": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#automake",
+      "source": "nixpkg"
+    },
+    "bison": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#bison",
+      "source": "nixpkg"
+    },
+    "clang": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#clang",
+      "source": "nixpkg"
+    },
+    "cmake": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#cmake",
+      "source": "nixpkg"
+    },
+    "curl": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#curl",
+      "source": "nixpkg"
+    },
+    "flex": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#flex",
+      "source": "nixpkg"
+    },
+    "freetype": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#freetype",
+      "source": "nixpkg"
+    },
+    "git": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#git",
+      "source": "nixpkg"
+    },
+    "github:NixOS/nixpkgs/nixpkgs-unstable": {
+      "last_modified": "2026-05-27T10:28:13Z",
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?lastModified=1779877693&narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D"
+    },
+    "glslang": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#glslang",
+      "source": "nixpkg"
+    },
+    "gnumake": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#gnumake",
+      "source": "nixpkg"
+    },
+    "libarchive": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#libarchive",
+      "source": "nixpkg"
+    },
+    "libtool": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#libtool",
+      "source": "nixpkg"
+    },
+    "libx11": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#libx11",
+      "source": "nixpkg"
+    },
+    "libxext": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#libxext",
+      "source": "nixpkg"
+    },
+    "libxml2": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#libxml2",
+      "source": "nixpkg"
+    },
+    "lld": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#lld",
+      "source": "nixpkg"
+    },
+    "meson": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#meson",
+      "source": "nixpkg"
+    },
+    "ninja": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#ninja",
+      "source": "nixpkg"
+    },
+    "patchelf": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#patchelf",
+      "source": "nixpkg"
+    },
+    "perl": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#perl",
+      "source": "nixpkg"
+    },
+    "pkg-config": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#pkg-config",
+      "source": "nixpkg"
+    },
+    "python3": {
+      "plugin_version": "0.0.4",
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#python3",
+      "source": "nixpkg"
+    },
+    "python3Packages.mako": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#python3Packages.mako",
+      "source": "nixpkg"
+    },
+    "python3Packages.pyyaml": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#python3Packages.pyyaml",
+      "source": "nixpkg"
+    },
+    "xz": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#xz",
+      "source": "nixpkg"
+    },
+    "yq-go": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#yq-go",
+      "source": "nixpkg"
+    },
+    "zip": {
+      "resolved": "github:NixOS/nixpkgs/4100e830e085863741bc69b156ec4ccd53ab5be0?narHash=sha256-NOF9NAREhxr50bbBfVcVOq%2BArCMSoe8dP79Pk2uyARk%3D#zip",
+      "source": "nixpkg"
+    }
+  }
+}

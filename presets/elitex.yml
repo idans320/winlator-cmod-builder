@@ -1,0 +1,4 @@
+cpu: oryon-1
+cflags: "-mcpu=oryon-1 -O3 -ffast-math -funroll-loops -fomit-frame-pointer -fwrapv -fno-strict-aliasing -ffunction-sections -fdata-sections -ffixed-x18"
+cxxflags: "-mcpu=oryon-1 -O3 -ffast-math -funroll-loops -fomit-frame-pointer -fwrapv -fno-strict-aliasing -ffunction-sections -fdata-sections -ffixed-x18 -std=c++17"
+ldflags: "-fuse-ld=lld -Wl,--gc-sections"

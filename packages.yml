@@ -3,21 +3,28 @@ mesa:
   repo: https://github.com/whitebelyash/mesa-unified.git
   branch: turnip/gen8
   output: mesa-{version}.zip
+  sdk_ver: 35
 
 fexcore:
   description: FEXCore CPU emulation layer
   repo: https://github.com/FEX-Emu/FEX.git
   branch: main
-  output: fexcore-{version}.zip
+  output: fexcore-{version}.wcp
+  mingw_ver: "20260519"
+  preset: elitex
 
 wine:
-  description: Wine 11 ARM64 + ARM64EC (bylaws patched)
-  repo: https://github.com/bylaws/wine.git
-  branch: upstream-arm64ec
+  description: Wine 11 Proton ARM64 + ARM64EC
+  repo: https://github.com/GameNative/proton-wine.git
+  branch: proton_11.0
   output: wine-arm64-{version}.wcp
+  mingw_ver: "20260519"
+  sdk_ver: 28
+  preset: elitex
 
 box64:
   description: Box64 x86_64 emulator for ARM64
   repo: https://github.com/ptitSeb/box64.git
   branch: main
   output: box64-{version}.zip
+  sdk_ver: 35
