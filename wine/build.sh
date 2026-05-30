@@ -107,9 +107,19 @@ setup_compiler_flags() {
         info "Using cached Termux deps: $DEPS"
     fi
 
-    C_OPTS="-Wno-declaration-after-statement -Wno-implicit-function-declaration -Wno-int-conversion $CPU_FLAGS"
+    C_OPTS="-Wno-declaration-after-statement -Wno-implicit-function-declaration -Wno-int-conversion"
+    if [ "$NO_OPT" -eq 1 ]; then
+        C_OPTS="$C_OPTS -O0"
+        warn "Optimizations DISABLED (--no-opt)"
+    else
+        C_OPTS="$C_OPTS $CPU_FLAGS"
+    fi
     export CFLAGS="$C_OPTS"
-    export CXXFLAGS="${CXX_EXTRA:-$C_OPTS}"
+    if [ "$NO_OPT" -eq 1 ]; then
+        export CXXFLAGS="$C_OPTS"
+    else
+        export CXXFLAGS="${CXX_EXTRA:-$C_OPTS}"
+    fi
     export CPPFLAGS="${DEPS:+-I$DEPS/include }--sysroot=${SYSROOT}"
     export LDFLAGS="${DEPS:+-L$DEPS/lib }${LD_EXTRA} -Wl,-rpath=${RUNTIME_PATH}/lib"
     export PKG_CONFIG_LIBDIR="${DEPS:+$DEPS/lib/pkgconfig:$DEPS/share/pkgconfig}"
@@ -470,6 +480,8 @@ fixup_makefile() {
     sed -i '/winedmo\/winedmo.so/d' Makefile
     echo "Fixing preloader LDFLAGS for LLD 21..."
     sed -i 's|-Wl,-Ttext=0x7d400000||g' Makefile
+    echo "Patching PE header to WRITECOPY (GOG installer fix)..."
+    sed -i '/header_size.*VPROT_COMMITTED | VPROT_READ );/s|VPROT_READ );|VPROT_READ | VPROT_WRITECOPY );|' dlls/ntdll/unix/virtual.c
 }
 
 # ── build ─────────────────────────────────────────────────────
@@ -804,6 +816,7 @@ DO_PACKAGE=0
 DO_SYSVSHM=0
 DO_SETUP_DEPS=0
 ENABLE_16KB=0
+NO_OPT=0
 
 usage() {
     echo "Usage: $0 [OPTIONS]"
@@ -818,6 +831,7 @@ usage() {
     echo "  --build-programs Build PE .exe program files"
     echo "  --package        Create .wcp package"
     echo "  --enable-16kb-pages  Enable 16KB page size support"
+    echo "  --no-opt         Disable CPU optimizations (-O0)"
     exit 0
 }
 
@@ -846,6 +860,7 @@ for arg in "$@"; do
         --build-programs) DO_BUILD_PROGRAMS=1 ;;
         --package) DO_PACKAGE=1 ;;
         --enable-16kb-pages) ENABLE_16KB=1 ;;
+        --no-opt) NO_OPT=1 ;;
         -h | --help) usage ;;
         *) die "Unknown argument: $arg" ;;
     esac
