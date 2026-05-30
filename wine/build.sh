@@ -606,9 +606,11 @@ build_programs() {
     cd "$WORKDIR/wine"
 
     echo "Building program .exe files..."
-    grep -oP 'programs/\S+/aarch64-windows/\S+\.exe(?=:)' Makefile | sort -u | while IFS= read -r target; do
-        [ -f "$target" ] && continue
-        make "$target" 2> /dev/null && echo "  $target"
+    for pe_arch in aarch64 i386; do
+        grep -oP 'programs/\S+/'"$pe_arch"'-windows/\S+\.exe(?=:)' Makefile | sort -u | while IFS= read -r target; do
+            [ -f "$target" ] && continue
+            make "$target" 2> /dev/null && echo "  $target"
+        done
     done
     info "Program .exe files built"
 }
@@ -679,9 +681,11 @@ package_wine() {
     done
 
     # program .exe files
-    for prog_dir in programs/*/aarch64-windows; do
-        for exe in "$prog_dir"/*.exe; do
-            [ -f "$exe" ] && cp "$exe" "$PKGDIR/lib/wine/aarch64-windows/"
+    for pe_arch in aarch64 i386; do
+        for prog_dir in programs/*/${pe_arch}-windows; do
+            for exe in "$prog_dir"/*.exe; do
+                [ -f "$exe" ] && cp "$exe" "$PKGDIR/lib/wine/${pe_arch}-windows/"
+            done
         done
     done
 
