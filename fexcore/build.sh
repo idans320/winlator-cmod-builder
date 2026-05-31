@@ -7,11 +7,11 @@ nocolor='\033[0m'
 PACKAGE_DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT_DIR="$(dirname "$PACKAGE_DIR")"
 WORKDIR="$PACKAGE_DIR/workdir"
+PKG_NAME="fexcore"
 
-FEX_REPO="https://github.com/FEX-Emu/FEX.git"
-FEX_BRANCH="main"
-
-LLVM_MINGW_VER="20260519"
+FEX_REPO=$(yq ".${PKG_NAME}.repo" "$ROOT_DIR/packages.yml")
+FEX_BRANCH=$(yq ".${PKG_NAME}.branch" "$ROOT_DIR/packages.yml")
+LLVM_MINGW_VER=$(yq ".${PKG_NAME}.mingw_ver" "$ROOT_DIR/packages.yml")
 HOST_ARCH="$(uname -m)"
 LLVM_MINGW_URL="https://github.com/mstorsjo/llvm-mingw/releases/download/${LLVM_MINGW_VER}/llvm-mingw-${LLVM_MINGW_VER}-ucrt-ubuntu-22.04-${HOST_ARCH}.tar.xz"
 
@@ -168,7 +168,8 @@ cat > "$PKGDIR/profile.json" << PROEOF
 }
 PROEOF
 
-WCP_FILE="$ROOT_DIR/fexcore-${FEX_VERSION}.wcp"
+OUTPUT_FILE=$(yq ".${PKG_NAME}.output" "$ROOT_DIR/packages.yml" | sed "s/{version}/$FEX_VERSION/")
+WCP_FILE="$ROOT_DIR/$OUTPUT_FILE"
 cd "$PKGDIR" && tar -cf - system32/ profile.json Config.json | xz -9e > "$WCP_FILE"
 echo -e "${green}Package created: $WCP_FILE${nocolor}"
 ls -lh "$WCP_FILE"

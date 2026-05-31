@@ -481,7 +481,7 @@ fixup_makefile() {
     echo "Fixing preloader LDFLAGS for LLD 21..."
     sed -i 's|-Wl,-Ttext=0x7d400000||g' Makefile
     echo "Patching PE header to WRITECOPY (GOG installer fix)..."
-    sed -i '/header_size.*VPROT_COMMITTED | VPROT_READ );/s|VPROT_READ );|VPROT_READ | VPROT_WRITECOPY );|' dlls/ntdll/unix/virtual.c
+    sed -i '/header_size.*VPROT_COMMITTED | VPROT_READ );/s#VPROT_READ );#VPROT_READ | VPROT_WRITECOPY );#' dlls/ntdll/unix/virtual.c
 }
 
 # ── build ─────────────────────────────────────────────────────

@@ -8,7 +8,7 @@ nocolor='\033[0m'
 ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PACKAGES_FILE="$ROOT_DIR/packages.yml"
 
-echo -e "${green}=== Winlator CMOD Multi-Builder ===${nocolor}"
+echo -e "${green}=== Winlator Assets Builder ===${nocolor}"
 
 if [ ! -f "$PACKAGES_FILE" ]; then
     echo -e "${red}packages.yml not found${nocolor}"
@@ -40,7 +40,7 @@ for pkg in $PACKAGES; do
         continue
     fi
 
-    if nix develop "$ROOT_DIR#$pkg" --command bash "$BUILD_SCRIPT"; then
+    if devbox run -- bash "$BUILD_SCRIPT"; then
         echo -e "${green}[OK] $pkg built successfully${nocolor}"
     else
         echo -e "${red}[FAIL] $pkg build failed${nocolor}"

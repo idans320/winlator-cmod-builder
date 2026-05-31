@@ -43,7 +43,7 @@
       "export DEVBOX_DIR=\"$(pwd)\"",
       "export ANDROID_HOME=\"$DEVBOX_DIR/.devbox/nix/profile/default/libexec/android-sdk\"",
       "export NDK=\"$DEVBOX_DIR/.devbox/nix/profile/default/libexec/android-sdk/ndk/29.0.14206865\"",
-      "echo \"Winlator CMOD build environment ready\"",
+      "echo \"Winlator Assets build environment ready\"",
       "echo \"  NDK: $NDK\"",
       "echo \"  SDK: $ANDROID_HOME\""
     ],

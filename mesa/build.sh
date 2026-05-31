@@ -9,9 +9,9 @@ ROOT_DIR="$(dirname "$PACKAGE_DIR")"
 WORKDIR="$PACKAGE_DIR/workdir"
 PKG_NAME="mesa"
 
-MESA_REPO="https://github.com/whitebelyash/mesa-unified.git"
-MESA_BRANCH="turnip/gen8"
-SDK_VER="35"
+MESA_REPO=$(yq ".${PKG_NAME}.repo" "$ROOT_DIR/packages.yml")
+MESA_BRANCH=$(yq ".${PKG_NAME}.branch" "$ROOT_DIR/packages.yml")
+SDK_VER=$(yq ".${PKG_NAME}.sdk_ver" "$ROOT_DIR/packages.yml")
 NDK_CLANG="$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin"
 DRIVER_SO="$WORKDIR/mesa/build-android/src/freedreno/vulkan/libvulkan_freedreno.so"
 
@@ -115,7 +115,8 @@ cat > "$PKGDIR/meta.json" << METAEOF
 }
 METAEOF
 
-WCP_FILE="$ROOT_DIR/mesa-${MESA_VERSION}.zip"
+OUTPUT_FILE=$(yq ".${PKG_NAME}.output" "$ROOT_DIR/packages.yml" | sed "s/{version}/$MESA_VERSION/")
+WCP_FILE="$ROOT_DIR/$OUTPUT_FILE"
 zip -j "$WCP_FILE" "$PKGDIR/vulkan.turnip.so" "$PKGDIR/meta.json"
 echo -e "${green}Package created: $WCP_FILE${nocolor}"
 ls -lh "$WCP_FILE"

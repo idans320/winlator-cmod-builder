@@ -127,8 +127,10 @@ ninja -C "$BUILD_DIR" install
 echo "Packaging..."
 PKGDIR="$WORKDIR/package"
 mkdir -p "$PKGDIR/system32"
+mkdir -p "$PKGDIR/syswow64"
 
 cp -v "$INSTALL_DIR/x64/"*.dll "$PKGDIR/system32/"
+cp -v "$INSTALL_DIR/x64/"*.dll "$PKGDIR/syswow64/"
 
 DLL_COUNT=$(find "$PKGDIR/system32" -name "*.dll" 2>/dev/null | wc -l)
 if [ "$DLL_COUNT" -eq 0 ]; then
@@ -151,7 +153,7 @@ CONFEOF
 # --- profile.json ---
 DLL_FILES=""
 COUNTER=0
-TOTAL=$(find "$PKGDIR/system32" -name "*.dll" | wc -l)
+TOTAL=$(($(find "$PKGDIR/system32" -name "*.dll" | wc -l) + $(find "$PKGDIR/syswow64" -name "*.dll" | wc -l)))
 for dll in "$PKGDIR/system32"/*.dll; do
     [ -f "$dll" ] || continue
     COUNTER=$((COUNTER + 1))
@@ -159,6 +161,14 @@ for dll in "$PKGDIR/system32"/*.dll; do
     COMMA=","
     [ "$COUNTER" -eq "$TOTAL" ] && COMMA=""
     DLL_FILES+=$'\n'"    {\"source\": \"system32/$dll_name\", \"target\": \"\${system32}/$dll_name\"}$COMMA"
+done
+for dll in "$PKGDIR/syswow64"/*.dll; do
+    [ -f "$dll" ] || continue
+    COUNTER=$((COUNTER + 1))
+    dll_name="$(basename "$dll")"
+    COMMA=","
+    [ "$COUNTER" -eq "$TOTAL" ] && COMMA=""
+    DLL_FILES+=$'\n'"    {\"source\": \"syswow64/$dll_name\", \"target\": \"\${syswow64}/$dll_name\"}$COMMA"
 done
 
 cat > "$PKGDIR/profile.json" << PROEOF
@@ -174,6 +184,6 @@ PROEOF
 
 OUTPUT_FILE=$(yq ".${PKG_NAME}.output" "$ROOT_DIR/packages.yml" | sed "s/{version}/$DXVK_VERSION/")
 WCP_FILE="$ROOT_DIR/$OUTPUT_FILE"
-cd "$PKGDIR" && tar -cf - system32/ profile.json Config.json | xz -9e > "$WCP_FILE"
+cd "$PKGDIR" && tar -cf - system32/ syswow64/ profile.json Config.json | xz -9e > "$WCP_FILE"
 echo -e "${green}Package created: $WCP_FILE${nocolor}"
 ls -lh "$WCP_FILE"

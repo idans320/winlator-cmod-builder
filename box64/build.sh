@@ -9,9 +9,9 @@ ROOT_DIR="$(dirname "$PACKAGE_DIR")"
 WORKDIR="$PACKAGE_DIR/workdir"
 PKG_NAME="box64"
 
-BOX64_REPO="https://github.com/ptitSeb/box64.git"
-BOX64_BRANCH="main"
-SDK_VER="35"
+BOX64_REPO=$(yq ".${PKG_NAME}.repo" "$ROOT_DIR/packages.yml")
+BOX64_BRANCH=$(yq ".${PKG_NAME}.branch" "$ROOT_DIR/packages.yml")
+SDK_VER=$(yq ".${PKG_NAME}.sdk_ver" "$ROOT_DIR/packages.yml")
 NDK_CLANG="$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin"
 
 echo -e "${green}=== Box64 Builder ===${nocolor}"
@@ -84,7 +84,8 @@ cat > "$PKGDIR/meta.json" << METAEOF
 }
 METAEOF
 
-WCP_FILE="$ROOT_DIR/box64-${BOX64_VERSION}.zip"
+OUTPUT_FILE=$(yq ".${PKG_NAME}.output" "$ROOT_DIR/packages.yml" | sed "s/{version}/$BOX64_VERSION/")
+WCP_FILE="$ROOT_DIR/$OUTPUT_FILE"
 zip -j "$WCP_FILE" "$PKGDIR/box64" "$PKGDIR/meta.json"
 echo -e "${green}Package created: $WCP_FILE${nocolor}"
 ls -lh "$WCP_FILE"
