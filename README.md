@@ -83,7 +83,8 @@ These files are the asset packages that Winlator loads at runtime.
 ├── fexcore/
 │   └── build.sh            # Builds FEXCore WOW64 DLLs
 ├── wine/
-│   └── build.sh            # Builds Wine 11 Proton ARM64 + ARM64EC
+│   ├── build.sh            # Builds Wine 11 Proton ARM64 + ARM64EC
+│   └── patches/            # Local patches applied after upstream android/patches
 ├── box64/
 │   └── build.sh            # Builds Box64 emulator
 └── dxvk/

@@ -21,6 +21,8 @@ wine:
   mingw_ver: "20260519"
   sdk_ver: 28
   preset: elitex
+  remotePatches: android/patches
+  localPatches: wine/patches
 
 box64:
   description: Box64 x86_64 emulator for ARM64

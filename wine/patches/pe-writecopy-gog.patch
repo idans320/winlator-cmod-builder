@@ -1,0 +1,11 @@
+--- a/dlls/ntdll/unix/virtual.c
++++ b/dlls/ntdll/unix/virtual.c
+@@ -3488,7 +3488,7 @@
+ 
+     /* set the image protections */
+ 
+-    set_vprot( view, ptr, ROUND_SIZE( 0, header_size, align_mask ), VPROT_COMMITTED | VPROT_READ );
++    set_vprot( view, ptr, ROUND_SIZE( 0, header_size, align_mask ), VPROT_COMMITTED | VPROT_READ | VPROT_WRITECOPY );
+ 
+     for (i = 0; i < nt->FileHeader.NumberOfSections; i++)
+     {

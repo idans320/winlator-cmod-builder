@@ -26,6 +26,18 @@ setup_env() {
     SDK_VER=$(yq ".${PKG_NAME}.sdk_ver" "$ROOT_DIR/packages.yml")
     PRESET=$(yq ".${PKG_NAME}.preset" "$ROOT_DIR/packages.yml")
 
+    REMOTE_PATCH_DIR=""
+    PKG_REMOTE_PATCHES=$(yq ".${PKG_NAME}.remotePatches" "$ROOT_DIR/packages.yml")
+    if [ -n "$PKG_REMOTE_PATCHES" ] && [ "$PKG_REMOTE_PATCHES" != "null" ]; then
+        REMOTE_PATCH_DIR="$WORKDIR/wine/$PKG_REMOTE_PATCHES"
+    fi
+
+    LOCAL_PATCH_DIR=""
+    PKG_LOCAL_PATCHES=$(yq ".${PKG_NAME}.localPatches" "$ROOT_DIR/packages.yml")
+    if [ -n "$PKG_LOCAL_PATCHES" ] && [ "$PKG_LOCAL_PATCHES" != "null" ]; then
+        LOCAL_PATCH_DIR="$ROOT_DIR/$PKG_LOCAL_PATCHES"
+    fi
+
     CPU_FLAGS=""
     CXX_EXTRA=""
     LD_EXTRA=""
@@ -121,7 +133,7 @@ setup_compiler_flags() {
         export CXXFLAGS="${CXX_EXTRA:-$C_OPTS}"
     fi
     export CPPFLAGS="${DEPS:+-I$DEPS/include }--sysroot=${SYSROOT}"
-    export LDFLAGS="${DEPS:+-L$DEPS/lib }${LD_EXTRA} -Wl,-rpath=${RUNTIME_PATH}/lib"
+    export LDFLAGS="${DEPS:+-L$DEPS/lib }${LD_EXTRA} -Wl,-rpath=${RUNTIME_PATH}/lib -Wl,-rpath=\\\$\$ORIGIN/../../lib"
     export PKG_CONFIG_LIBDIR="${DEPS:+$DEPS/lib/pkgconfig:$DEPS/share/pkgconfig}"
 
     echo "HOST CC = $($CC --version 2> /dev/null | head -1 || echo "$CC")"
@@ -411,77 +423,59 @@ configure_wine() {
 
 apply_patches() {
     echo "Applying patches..."
-    PATCHES=(
-        "dlls_advapi32_advapi.c.patch"
-        "dlls_amd_ags_x64_unixlib.c.patch"
-        "dlls_dnsapi_libresolv.c.patch" "dlls_dnsapi_record.c.patch"
-        "dlls_midimap_Makefile.in.patch" "dlls_midimap_midimap.c.patch"
-        "dlls_nsiproxy.sys_nsi_common.h.patch" "dlls_nsiproxy.sys_ip.c.patch" "dlls_nsiproxy.sys_ndis.c.patch"
-        "dlls_ntdll_Makefile.in.patch" "dlls_ntdll_unix_fsync.c.patch"
-        "dlls_ntdll_unix_loader.c.patch" "dlls_ntdll_unix_server.c.patch"
-        "dlls_ntdll_unix_sync.c.patch" "dlls_ntdll_unix_virtual.c.patch"
-        "dlls_ntdll_unix_signal_x86_64.c.patch"
-        "dlls_opengl32_unix_wgl.c.patch"
-        "dlls_user32_Makefile.in.patch" "dlls_win32u_clipboard.c.patch"
-        "dlls_winebus.sys_bus_sdl.c.patch" "dlls_winepulse.drv_pulse.c.patch"
-        "dlls_winex11.drv_bitblt.c.patch" "dlls_winex11.drv_keyboard.c.patch"
-        "dlls_winex11.drv_mouse.c.patch" "dlls_winex11.drv_opengl.c.patch"
-        "dlls_winex11.drv_window.c.patch" "dlls_winex11.drv_x11drv.h.patch"
-        "dlls_winex11.drv_x11drv_main.c.patch"
-        "dlls_wow64_syscall.c.patch"
-        "loader_preloader.c.patch"
-        "programs_explorer_desktop.c.patch" "programs_wineboot_wineboot.c.patch"
-        "programs_winebrowser_Makefile.in.patch" "programs_winebrowser_main.c.patch"
-        "programs_winemenubuilder_winemenubuilder.c.patch"
-        "server_Makefile.in.patch" "server_fsync.c.patch" "server_inproc_sync.c.patch"
-        "server_main.c.patch" "server_thread.c.patch" "server_unicode.c.patch"
-        "dlls_ntdll_unix_esync.c.patch" "dlls_ntdll_unix_esync.h.patch"
-        "server_esync.c.patch" "server_esync.h.patch"
-    )
 
-    PATCH_DIR="$WORKDIR/wine/android/patches"
-    for patch in "${PATCHES[@]}"; do
+    apply_patch_file() {
+        local patch_file="$1"
+        local patch_name="$(basename "$patch_file")"
         echo "----------------------------------------"
-        echo "Applying: $patch"
-        [ ! -f "$PATCH_DIR/$patch" ] && {
-            echo "NOT FOUND: $patch"
-            continue
-        }
-
-        if git apply --check "$PATCH_DIR/$patch" > /dev/null 2>&1; then
-            git apply "$PATCH_DIR/$patch" && {
-                echo "SUCCESS: $patch applied"
-                continue
-            }
-            echo "FAILED: error applying $patch"
-            continue
+        echo "Applying: $patch_name"
+        if git apply --check "$patch_file" > /dev/null 2>&1; then
+            git apply "$patch_file" && { echo "SUCCESS: $patch_name applied"; return 0; }
+            echo "FAILED: error applying $patch_name"
+            return 1
         fi
-
-        if grep -q "^new file\|^--- /dev/null\|already exists" "$PATCH_DIR/$patch" 2> /dev/null; then
-            DST_FILE=$(grep "^+++ b/" "$PATCH_DIR/$patch" | head -1 | sed 's|^+++ b/||' | sed 's/\t.*//')
+        if grep -q "^new file\|^--- /dev/null\|already exists" "$patch_file" 2> /dev/null; then
+            DST_FILE=$(grep "^+++ b/" "$patch_file" | head -1 | sed 's|^+++ b/||' | sed 's/\t.*//')
             [ -n "$DST_FILE" ] && [ -e "$DST_FILE" ] && rm -f "$DST_FILE"
-            patch -p1 -s < "$PATCH_DIR/$patch" 2> /dev/null && {
-                echo "SUCCESS: $patch applied (new file)"
-                continue
-            }
+            patch -p1 -s < "$patch_file" 2> /dev/null && { echo "SUCCESS: $patch_name applied (new file)"; return 0; }
         fi
-        echo "SKIPPED: $patch does not apply cleanly"
-    done
+        echo "SKIPPED: $patch_name does not apply cleanly"
+        return 1
+    }
+
+    # remote patches directory (defined in packages.yml, relative to wine source)
+    if [ -n "$REMOTE_PATCH_DIR" ] && [ -d "$REMOTE_PATCH_DIR" ]; then
+        local patch_count=0
+        for patch_file in "$REMOTE_PATCH_DIR"/*.patch; do
+            [ -f "$patch_file" ] || continue
+            apply_patch_file "$patch_file"
+            patch_count=$((patch_count + 1))
+        done
+        echo "  ($patch_count remote patches)"
+    fi
+
+    # local patches directory (defined in packages.yml, relative to repo root)
+    if [ -n "$LOCAL_PATCH_DIR" ] && [ -d "$LOCAL_PATCH_DIR" ]; then
+        echo "--- local patches ---"
+        local patch_count=0
+        for patch_file in "$LOCAL_PATCH_DIR"/*.patch; do
+            [ -f "$patch_file" ] || continue
+            apply_patch_file "$patch_file"
+            patch_count=$((patch_count + 1))
+        done
+        echo "  ($patch_count local patches)"
+    fi
+
     info "Done applying patches."
 }
 
 fixup_makefile() {
-    echo "Adding bundled-lib RUNPATH to Makefile..."
-    sed -i 's|-Wl,-rpath=${RUNTIME_PATH}/lib|-Wl,-rpath=${RUNTIME_PATH}/lib -Wl,-rpath=\$$ORIGIN/../../lib|g' Makefile
-    echo "Adding esync.h include to server.c..."
-    sed -i '/^#include "fsync.h"/a #include "esync.h"' dlls/ntdll/unix/server.c
+    # Makefile-only fixes applied after configure (generated file, not patchable)
     echo "Disabling winedmo Unix build (no ffmpeg)..."
     sed -i '/dlls\/winedmo\/winedmo.so:/,/^$/d' Makefile
     sed -i '/winedmo\/winedmo.so/d' Makefile
     echo "Fixing preloader LDFLAGS for LLD 21..."
     sed -i 's|-Wl,-Ttext=0x7d400000||g' Makefile
-    echo "Patching PE header to WRITECOPY (GOG installer fix)..."
-    sed -i '/header_size.*VPROT_COMMITTED | VPROT_READ );/s#VPROT_READ );#VPROT_READ | VPROT_WRITECOPY );#' dlls/ntdll/unix/virtual.c
 }
 
 # ── build ─────────────────────────────────────────────────────
